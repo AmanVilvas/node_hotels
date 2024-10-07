@@ -1,0 +1,87 @@
+schema--bluprint of structures and data types of your documents within a collection
+// const jsonString = '{"name": "John", "age": 30, "city": "New York"}';
+// const jsonObject = JSON.parse(jsonString); // Convert JSON string to object
+// console.log(jsonObject.name); // Output: John
+
+
+
+// const objectToConvert = { name: "Alice", age: 25 };
+// const jsonStringified = JSON.stringify(objectToConvert); // Convert object to JSON string
+// console.log(jsonStringified); // Output: {"name": "Alice", "age":25}
+const express = require('express')
+const app = express();
+// var fs = require('fs');
+// var os = require('os');
+const db=require('./db');
+const bodyParser = require('body-parser'); //post request method
+app.use(bodyParser.json());
+const Person = require('./models/person');
+//to use get or any HTTP request establish a connection by db.js file
+
+app.get('/person', function (req, res) {
+  res.send('Hello Welcome to my Hotel')
+})
+
+//POST route to add a person
+//post method is used to know that we want to save this data or not sent by the client
+app.post('/person',(req,res)=>{
+  const data= req.body //client se data aayega pehle bodyParser mai then body mai
+//in req.body person's data will be stored  
+const newPerson = new Person(data);
+
+//save the new person data in the data base
+// newPerson.save{(error,savedPerson) =>{
+//  try{
+//   const data =req.body; 
+//   const newPerson =  newPerson(data);
+//   const response = await newPerson.save(); //await-- jab tak data save nhi hota wait karo
+//   console.log('data is saved');
+//   res.status(200).json(response);
+//  }
+//  catch(err){
+//   console.log(err);
+//   res.status(500).json({error:'Internal Server Error'});
+//  }
+
+// }} 
+  // //yeh callback function hai isme ya to person ka data mil jayega hame ya to koi error
+  // if(error){
+  //   console.log('Error saving person',error);
+  //   res.status(500).json({error:'Internal server error'})
+  //   //res.status means hame pehle req-request aayegi client se and fir res--response aayga hamaare uss request k lie
+  // }
+  // else {
+  //   console.log('data saved successfully');
+  //   res.status(200).json(savedPerson);
+  // }
+app.get('/person',async(req,res)=>{
+  try{
+   const data = await Person.find();
+   console.log('data is saved');
+   res.status(200).json(data);
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({error:'Internal Server Error'});
+  }
+})
+
+
+
+// we were using this but this is very long method
+// newPerson.name = data.name;
+// newPerson.mobile = data.mobile;
+// newPerson.age = data.age;
+// newPerson.address = data.address;
+// newPerson.email = data.email;
+})
+// app.get('/server', (req,res)=>
+// {res.send('Express js is used to create this server')})
+// app.get('/servername', (req,res)=>
+// {res.send('language used in the server is JavaScript')})
+// app.post('/person', (req,res)=>{
+//   console.log("data is saved")
+//   res.send("data is saved in the postman")
+// })
+app.listen(3000,()=>
+console.log('server is alive'))
