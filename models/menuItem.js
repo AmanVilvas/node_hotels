@@ -28,6 +28,8 @@ const menuItemSchema = new mongoose.Schema({
     min: 0,
   },
 });
+ 
+//commendt added
 
 const MenuItem = mongoose.model('MenuItem', menuItemSchema);
 module.exports = MenuItem;
