@@ -1,33 +1,27 @@
-//db.js is just a module that take help from mongoose to build a connection bridge between node js and mongo DB
- 
 const mongoose = require('mongoose');
-const mongoURL='mongodb://localhost:27017/hotel';//define mongodb connections
-mongoose.connect(mongoURL);
-// , {
-//     useNewUrlParser: true, //ensuring that we are using new and updated things
-//     useUnifiedTopology: true
-// })
-// Connect to MongoDB with additional options
-mongoose.connect(mongoURL, {
-    useNewUrlParser: true, // Ensures the connection uses the new URL parser
-    useUnifiedTopology: true // Enables new connection management engine for better server discovery
-});
-//here db creates connections with NodeJS and MongoDB
-const db= mongoose.connection;
-//db represents mongoDB conenctions
+require('dotenv').config(); 
 
-//.on is used to listen when server is connected so it show the message when server is connected to mongoDB
-//event listener keyword that MongoDB understands
+const  mongoURL = process.env.MONGODB_URL;
 
-db.on('connected',() => {
+mongoose.connect(mongoURL , { })
+    .then(() => console.log('MongoDB connection successful'))
+    .catch(err => console.error('MongoDB connection has errors:', err));
+
+// Access the connection object
+const db = mongoose.connection;
+
+// Event listeners to monitor connection status
+db.on('connected', () => {
     console.log('Connected to MongoDB Server');
-})
-db.on('disconnected',() => {
-    console.log('MongoDB connections is disconnected');
-})
-db.on('error',(err) => {
-    console.log('MongoDB connections has errors',err);
-})
-//exports the mongodb connections to run the file
-module.exports=db;
+});
 
+db.on('disconnected', () => {
+    console.log('MongoDB connection is disconnected');
+});
+
+db.on('error', (err) => {
+    console.log('MongoDB connection has errors:', err);
+});
+
+// Export the db connection module
+module.exports = db;
