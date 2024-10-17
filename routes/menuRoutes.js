@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const MenuItem = require('../models/menuitem'); // Ensure the model path is correct
+const MenuItem = require('../models/menuItem'); // Ensure the model path is correct
 
 // POST route to add a menu item
 router.post('/', async (req, res) => {
